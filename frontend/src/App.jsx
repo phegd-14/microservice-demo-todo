@@ -3,6 +3,7 @@ import "./app.css";
 
 const USER_API = "http://localhost:4000";
 const TASK_API = "http://localhost:5000";
+const DEADLINE_API = "http://localhost:6001";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -10,17 +11,45 @@ function App() {
   const [password, setPassword] = useState("");
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
+  const [newDeadline, setNewDeadline] = useState(""); // deadline input
   const [editingTask, setEditingTask] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [editDeadline, setEditDeadline] = useState("");
 
-  // Fetch tasks after login
+  // unified fetch wrapper with token + expiry handling
+  const authFetch = async (url, options = {}) => {
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        ...(options.headers || {}),
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.status === 403) {
+      alert("Session expired, please login again.");
+      logout();
+      return null;
+    }
+    return res;
+  };
+
+  // Fetch tasks + deadlines after login
   useEffect(() => {
     if (token) {
-      fetch(`${TASK_API}/tasks`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-        .then((res) => res.json())
-        .then((data) => Array.isArray(data) && setTasks(data))
+      authFetch(`${TASK_API}/tasks`)
+        .then((res) => res && res.json())
+        .then(async (data) => {
+          if (!Array.isArray(data)) return;
+          // Fetch deadlines
+          const res = await authFetch(`${DEADLINE_API}/deadlines`);
+          const deadlines = res ? await res.json() : [];
+          // merge tasks with deadlines
+          const merged = data.map((task) => {
+            const dl = deadlines.find((d) => d.taskId === task.id);
+            return { ...task, deadline: dl ? dl.deadline : null };
+          });
+          setTasks(merged);
+        })
         .catch(console.error);
     }
   }, [token]);
@@ -51,61 +80,85 @@ function App() {
 
   const addTask = async () => {
     if (!newTask.trim()) return;
-    const res = await fetch(`${TASK_API}/tasks`, {
+    const res = await authFetch(`${TASK_API}/tasks`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ description: newTask }),
     });
+    if (!res) return;
     if (!res.ok) {
       const err = await res.json();
       alert("Failed to add task: " + (err.error || res.status));
       return;
     }
     const task = await res.json();
-    setTasks([...tasks, task]);
+
+    // if deadline is set, add deadline entry
+    let deadline = null;
+    if (newDeadline) {
+      const dlRes = await authFetch(`${DEADLINE_API}/deadlines`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ taskId: task.id, deadline: newDeadline }),
+      });
+      if (dlRes && dlRes.ok) {
+        const dlData = await dlRes.json();
+        deadline = dlData.deadline;
+      }
+    }
+
+    setTasks([...tasks, { ...task, deadline }]);
     setNewTask("");
+    setNewDeadline("");
   };
 
   const toggleDone = async (task) => {
     const updated = { description: task.description, done: task.done ? 0 : 1 };
-    await fetch(`${TASK_API}/tasks/${task.id}`, {
+    await authFetch(`${TASK_API}/tasks/${task.id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updated),
     });
     setTasks(tasks.map((t) => (t.id === task.id ? { ...t, ...updated } : t)));
   };
 
   const deleteTask = async (id) => {
-    await fetch(`${TASK_API}/tasks/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    await authFetch(`${TASK_API}/tasks/${id}`, { method: "DELETE" });
+    await authFetch(`${DEADLINE_API}/deadlines/${id}`, { method: "DELETE" });
     setTasks(tasks.filter((t) => t.id !== id));
   };
 
   const startEdit = (task) => {
     setEditingTask(task.id);
     setEditValue(task.description);
+    setEditDeadline(task.deadline || "");
   };
 
   const saveEdit = async (id) => {
-    const updated = { description: editValue, done: tasks.find(t => t.id === id).done };
-    await fetch(`${TASK_API}/tasks/${id}`, {
+    const updated = {
+      description: editValue,
+      done: tasks.find((t) => t.id === id).done,
+    };
+    await authFetch(`${TASK_API}/tasks/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(updated),
     });
-    setTasks(tasks.map((t) => (t.id === id ? { ...t, description: editValue } : t)));
+
+    // update deadline
+    if (editDeadline) {
+      await authFetch(`${DEADLINE_API}/deadlines/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deadline: editDeadline }),
+      });
+    }
+
+    setTasks(
+      tasks.map((t) =>
+        t.id === id ? { ...t, description: editValue, deadline: editDeadline } : t
+      )
+    );
     setEditingTask(null);
   };
 
@@ -149,6 +202,11 @@ function App() {
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
             />
+            <input
+              type="date"
+              value={newDeadline}
+              onChange={(e) => setNewDeadline(e.target.value)}
+            />
             <button onClick={addTask}>Add</button>
           </div>
 
@@ -161,6 +219,11 @@ function App() {
                       value={editValue}
                       onChange={(e) => setEditValue(e.target.value)}
                     />
+                    <input
+                      type="date"
+                      value={editDeadline || ""}
+                      onChange={(e) => setEditDeadline(e.target.value)}
+                    />
                     <button onClick={() => saveEdit(t.id)}>Save</button>
                     <button onClick={() => setEditingTask(null)}>Cancel</button>
                   </>
@@ -172,6 +235,9 @@ function App() {
                     >
                       {t.description}
                     </span>
+                    {t.deadline && (
+                      <small className="deadline"> (Due: {t.deadline})</small>
+                    )}
                     <div className="task-actions">
                       <button onClick={() => startEdit(t)}>✏️</button>
                       <button onClick={() => deleteTask(t.id)}>❌</button>
