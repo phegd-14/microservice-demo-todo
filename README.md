@@ -1,5 +1,5 @@
 
-# Task & Deadline Microservices
+# Todo app that is build using Microservices
 
 This project is a simple **microservices setup** with:
 - **User Service** → Handles authentication (JWT).
