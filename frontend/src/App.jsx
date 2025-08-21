@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import "./app.css";
+import "./index.css";
 
 const USER_API = "http://localhost:4000";
 const TASK_API = "http://localhost:5000";
 const DEADLINE_API = "http://localhost:6001";
 
 function App() {
+  const [darkMode, setDarkMode] = useState(true); // default dark
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -53,6 +55,14 @@ function App() {
         .catch(console.error);
     }
   }, [token]);
+
+   useEffect(() => {
+    document.body.className = darkMode ? "dark-mode" : "light-mode";
+  }, [darkMode]);
+
+  const toggleTheme = () => {
+    setDarkMode((prev) => !prev);
+  };
 
   const login = async () => {
     const res = await fetch(`${USER_API}/login`, {
@@ -170,6 +180,11 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Theme toggle button */}
+      <button className="theme-toggle" onClick={toggleTheme}>
+        {darkMode ? "☀️ Light" : "🌙 Dark"}
+      </button>
+
       {!token ? (
         <div className="auth-box">
           <h2>Login / Signup</h2>
