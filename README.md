@@ -12,6 +12,9 @@ This project is a simple **microservices setup** with:
 ## 🚀 Running the Project
 
 ### 1. Clone the Repo
+
+You can clone the repo witht the following code.  
+
 ```bash
 git clone https://github.com/phegd-14/microservice-demo-todo
 cd microservice-demo-todo
@@ -41,9 +44,8 @@ npm run dev
 
 ---
 
-### Notes
+### Note
 
-Make sure all 3 services are running before starting the frontend.  
-JWT secret (supersecret) must be the same across services.  
-SQLite DB files will be auto-created in each service folder.  
-Use Thunder Client / Postman to test APIs if needed.  
+> Make sure all 3 services are running before starting the frontend.  
+> JWT secret (supersecret) must be the same across services.  
+> SQLite DB files will be auto-created in each service folder.  
