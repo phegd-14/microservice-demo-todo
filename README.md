@@ -12,8 +12,8 @@ This project is a simple **microservices setup** with:
 
 ### 1. Clone the Repo
 ```bash
-git clone https://github.com/<your-username>/<repo-name>.git
-cd <repo-name>
+git clone https://github.com/phegd-14/microservice-demo-todo
+cd microservice-demo-todo
 ```
 
 ### 2. Run Backend Services
