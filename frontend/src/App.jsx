@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./app.css";
+import "./App.css";
 import "./index.css";
 
 const USER_API = "http://localhost:4000";

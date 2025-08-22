@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "4000:4000"
+    networks:
+      - micro-net
+
+  task-service:
+    build: ./task-service
+    container_name: task-service
+    ports:
+      - "5000:5000"
+    networks:
+      - micro-net
+
+  deadline-service:
+    build: ./deadline-service
+    container_name: deadline-service
+    ports:
+      - "6001:6001"
+    networks:
+      - micro-net
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "5173:80"   # Map React app on localhost:5173
+    depends_on:
+      - user-service
+      - task-service
+      - deadline-service
+    networks:
+      - micro-net
+
+networks:
+  micro-net:
+    driver: bridge
