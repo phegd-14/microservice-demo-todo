@@ -1,28 +1,26 @@
-# User Service
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
+  name: task-service
   namespace: todo-app
   labels:
-    app: user-service
+    app: task-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: task-service
   template:
     metadata:
       labels:
-        app: user-service
+        app: task-service
     spec:
       containers:
-      - name: user-service
-        image: todo-user-service:4.0
-        imagePullPolicy: IfNotPresent
+      - name: task-service
+        image: task-service:0.0.1
+        imagePullPolicy: Never
         ports:
-        - containerPort: 4000
+        - containerPort: 5000
         resources:
           requests:
             memory: "128Mi"
@@ -34,11 +32,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: user-service
+  name: task-service
   namespace: todo-app
 spec:
   selector:
-    app: user-service
+    app: task-service
   ports:
-  - port: 4000
-    targetPort: 4000
+  - port: 5000
+    targetPort: 5000

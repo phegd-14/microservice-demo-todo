@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: todo-frontend:4.0
-          imagePullPolicy: IfNotPresent
+          image: frontend:0.0.3
+          imagePullPolicy: Never
           ports:
             - containerPort: 80
           resources:
@@ -39,4 +39,3 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30081   # you will access app at http://localhost:30081

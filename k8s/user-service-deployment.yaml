@@ -1,29 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: task-service
+  name: user-service
   namespace: todo-app
   labels:
-    app: task-service
+    app: user-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: task-service
+      app: user-service
   template:
     metadata:
       labels:
-        app: task-service
+        app: user-service
     spec:
       containers:
-      - name: task-service
-        image: todo-task-service:4.0
-        imagePullPolicy: IfNotPresent
+      - name: user-service
+        image: user-service:0.0.1
+        imagePullPolicy: Never
         ports:
-        - containerPort: 5000
-        env:
-        - name: USER_SERVICE_URL
-          value: "http://user-service.todo-app.svc.cluster.local:4000"
+        - containerPort: 4000
         resources:
           requests:
             memory: "128Mi"
@@ -35,11 +32,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: task-service
+  name: user-service
   namespace: todo-app
 spec:
   selector:
-    app: task-service
+    app: user-service
   ports:
-  - port: 5000
-    targetPort: 5000
+  - port: 4000
+    targetPort: 4000

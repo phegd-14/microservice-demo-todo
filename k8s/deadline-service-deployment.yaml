@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: deadline-service
-          image: todo-deadline-service:4.0
-          imagePullPolicy: IfNotPresent
+          image: deadline-service:0.0.1
+          imagePullPolicy: Never
           ports:
             - containerPort: 6001
           resources:
@@ -36,6 +36,5 @@ spec:
   selector:
     app: deadline-service
   ports:
-    - protocol: TCP
-      port: 6001
-      targetPort: 6001
+  - port: 6001
+    targetPort: 6001

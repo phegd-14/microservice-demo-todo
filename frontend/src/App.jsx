@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import "./index.css";
 
-// e.g. src/config.js
-const USER_API = "http://localhost:4000"; 
-const TASK_API = "http://localhost:5000";
-const DEADLINE_API = "http://localhost:6001";
+const BASE_API = ""; // use relative path — Ingress handles the routing
+
+const USER_API = `${BASE_API}`;
+const TASK_API = `${BASE_API}`;
+const DEADLINE_API = `${BASE_API}`;
+
 
 function App() {
   const [darkMode, setDarkMode] = useState(true); // default dark
