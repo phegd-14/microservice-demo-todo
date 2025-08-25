@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import "./index.css";
 
-const USER_API = "http://localhost:4000";
+// e.g. src/config.js
+const USER_API = "http://localhost:4000"; 
 const TASK_API = "http://localhost:5000";
 const DEADLINE_API = "http://localhost:6001";
 

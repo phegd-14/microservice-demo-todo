@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deadline-service
+  namespace: todo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deadline-service
+  template:
+    metadata:
+      labels:
+        app: deadline-service
+    spec:
+      containers:
+        - name: deadline-service
+          image: todo-deadline-service:4.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6001
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deadline-service
+  namespace: todo-app
+spec:
+  selector:
+    app: deadline-service
+  ports:
+    - protocol: TCP
+      port: 6001
+      targetPort: 6001

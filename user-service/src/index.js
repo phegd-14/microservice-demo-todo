@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 // allow frontend (Vite default = 5173)
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:30081" }));
 
 const JWT_SECRET = "supersecret"; // ⚠️ move to ENV later
 
