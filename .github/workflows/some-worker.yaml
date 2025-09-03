@@ -2,16 +2,21 @@ name: my-workflow
 on: 
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'     
+      userName:
+        description: 'Test user name'     
         required: true
-        default: 'warning'
+        default: 'test1'
       tags:
         description: 'Test scenario tags'  
+      number:
+        description: 'Test scenario number'
+        required: true
+        default: 1
 jobs:
   printInputs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "Log level: ${{ github.event.inputs.logLevel }}"
-        echo "Tags: ${{ github.event.inputs.tags }}" 
+        echo "User name: ${{ github.event.inputs.userName }}"
+        echo "Tags: ${{ github.event.inputs.tags }}"
+        echo "Number: ${{ github.event.inputs.number }}"
