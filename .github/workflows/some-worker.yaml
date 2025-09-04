@@ -20,6 +20,6 @@ jobs:
       shell: cmd
       run: |
           rem Print the input values
-          echo "User name: %userName%"
-          echo "Tags: %tags%"
-            echo "Number: %number%"
+          echo "User name: ${{ github.event.inputs.userName }}"
+          echo "Tags: ${{ github.event.inputs.tags }}"
+          echo "Number: ${{ github.event.inputs.number }}"
