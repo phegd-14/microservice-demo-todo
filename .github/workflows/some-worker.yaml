@@ -14,9 +14,12 @@ on:
         default: '1'
 jobs:
   printInputs:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
-    - run: |
-        echo "User name: %userName%"
-        echo "Tags: %tags%"
-        echo "Number: %number%"
+    - name: Print Inputs
+      shell: cmd
+      run: |
+          rem Print the input values
+          echo "User name: %userName%"
+          echo "Tags: %tags%"
+            echo "Number: %number%"
