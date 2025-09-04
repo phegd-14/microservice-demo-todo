@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
-        echo "User name: ${{ github.event.inputs.userName }}"
-        echo "Tags: ${{ github.event.inputs.tags }}"
-        echo "Number: ${{ github.event.inputs.number }}"
+        echo "User name: %userName%"
+        echo "Tags: %tags%"
+        echo "Number: %number%"
