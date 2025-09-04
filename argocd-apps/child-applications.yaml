@@ -1,0 +1,123 @@
+# User Service Application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: user-service
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    targetRevision: k8s
+    path: k8s
+    directory:
+      include: user-service-deployment.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+# Task Service Application  
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: task-service
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    targetRevision: k8s
+    path: k8s
+    directory:
+      include: task-service-deployment.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+# Deadline Service Application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: deadline-service
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    targetRevision: k8s
+    path: k8s
+    directory:
+      include: deadline-service-deployment.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+# Frontend Application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frontend
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    targetRevision: k8s
+    path: k8s
+    directory:
+      include: frontend-deployment.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+# Ingress Application
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: todo-ingress
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    targetRevision: k8s
+    path: k8s
+    directory:
+      include: todo-app-ingress.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
