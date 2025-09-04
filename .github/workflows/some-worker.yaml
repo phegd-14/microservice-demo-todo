@@ -19,7 +19,6 @@ jobs:
     - name: Print Inputs
       shell: cmd
       run: |
-          rem Print the input values
-          echo "User name: ${{ github.event.inputs.userName }}"
-          echo "Tags: ${{ github.event.inputs.tags }}"
-          echo "Number: ${{ github.event.inputs.number }}"
+       rem trying to run a command with external values
+       mkdir ${{ github.event.inputs.userName }}
+       cd ${{ github.event.inputs.userName }}
