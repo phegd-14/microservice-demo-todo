@@ -11,7 +11,7 @@ on:
       number:
         description: 'Test scenario number'
         required: true
-        default: 1
+        default: '1'
 jobs:
   printInputs:
     runs-on: ubuntu-latest
