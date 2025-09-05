@@ -17,5 +17,5 @@ jobs:
       shell: cmd
       run: |
        rem trying to run a command with external values
-       mkdir ${{ github.event.inputs.userName }}
+       mkdir ${{ github.event.inputs.userName || 'test-default' }}
        dir
