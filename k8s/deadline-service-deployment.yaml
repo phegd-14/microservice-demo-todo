@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: deadline-service
-          image: deadline-service:0.0.1
+          image: todo-deadline-service:6.0
           imagePullPolicy: Never
           ports:
             - containerPort: 6001

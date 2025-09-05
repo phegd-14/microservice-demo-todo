@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: task-service
-        image: task-service:0.0.1
+        image: todo-task-service:6.0
         imagePullPolicy: Never
         ports:
         - containerPort: 5000
