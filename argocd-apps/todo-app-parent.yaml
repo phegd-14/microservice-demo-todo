@@ -1,11 +1,8 @@
-# User Service Application
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: user-service
+  name: todo-app-parent
   namespace: argocd
-  labels:
-    app.kubernetes.io/part-of: todo-app
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -13,161 +10,14 @@ spec:
   source:
     repoURL: https://github.com/phegd-14/microservice-demo-todo.git
     targetRevision: k8s
-    path: k8s
-    directory:
-      include: user-service-deployment.yaml
+    path: argocd-apps
   destination:
     server: https://kubernetes.default.svc
-    namespace: todo-app
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-
----
-# Task Service Application  
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: task-service
-  namespace: argocd
-  labels:
-    app.kubernetes.io/part-of: todo-app
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/phegd-14/microservice-demo-todo.git
-    targetRevision: k8s
-    path: k8s
-    directory:
-      include: task-service-deployment.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: todo-app
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-
----
-# Deadline Service Application
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: deadline-service
-  namespace: argocd
-  labels:
-    app.kubernetes.io/part-of: todo-app
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/phegd-14/microservice-demo-todo.git
-    targetRevision: k8s
-    path: k8s
-    directory:
-      include: deadline-service-deployment.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: todo-app
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-
----
-# Frontend Application
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: frontend
-  namespace: argocd
-  labels:
-    app.kubernetes.io/part-of: todo-app
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/phegd-14/microservice-demo-todo.git
-    targetRevision: k8s
-    path: k8s
-    directory:
-      include: frontend-deployment.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: todo-app
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-
----
-# Ingress Application
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: todo-ingress
-  namespace: argocd
-  labels:
-    app.kubernetes.io/part-of: todo-app
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://github.com/phegd-14/microservice-demo-todo.git
-    targetRevision: k8s
-    path: k8s
-    directory:
-      include: todo-app-ingress.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: todo-app
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    retry:
-      limit: 5
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
+      
