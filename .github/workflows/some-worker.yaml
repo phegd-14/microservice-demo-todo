@@ -6,12 +6,9 @@ on:
         description: 'Test user name'     
         required: true
         default: 'test1'
-      tags:
-        description: 'Test scenario tags'  
-      number:
-        description: 'Test scenario number'
-        required: true
-        default: '1'
+  push:
+   branches:
+     - main
 jobs:
   printInputs:
     runs-on: windows-latest
