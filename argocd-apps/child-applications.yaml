@@ -11,7 +11,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    repoURL: https://github.com/phegd-14/microservice-demo-todo.git
     targetRevision: k8s
     path: k8s
     directory:
@@ -151,7 +151,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Richie-ric/microservices-ArgoCD-demo.git
+    repoURL: https://github.com/phegd-14/microservice-demo-todo.git
     targetRevision: k8s
     path: k8s
     directory:
