@@ -1,0 +1,9 @@
+name: Main Workflow
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  call-backup:
+    uses: ./.github/workflows/backup.yaml

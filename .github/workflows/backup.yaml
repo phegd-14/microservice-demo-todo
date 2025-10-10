@@ -1,0 +1,11 @@
+name: Simple Backup Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  simple-backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm Backup Workflow Called
+        run: echo "✅ Backup workflow was successfully called!"
