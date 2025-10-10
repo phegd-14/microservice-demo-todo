@@ -6,6 +6,6 @@ on:
 
 jobs:
   call-backup:
-    uses: ./.github/workflows/backup.yml
+    uses: ./.github/workflows/backup.yaml
     with:
       message: "Hello from the main workflow!"
