@@ -1,0 +1,51 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: todo-app-routing
+  namespace: todo-app
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - todo-app-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /signup
+    route:
+    - destination:
+        host: user-service
+        port:
+          number: 4000
+  - match:
+    - uri:
+        prefix: /login
+    route:
+    - destination:
+        host: user-service
+        port:
+          number: 4000
+  - match:
+    - uri:
+        prefix: /tasks
+    route:
+    - destination:
+        host: task-service
+        port:
+          number: 5000
+  - match:
+    - uri:
+        prefix: /deadlines
+    route:
+    - destination:
+        host: deadline-service
+        port:
+          number: 6001
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: frontend
+        port:
+          number: 80
