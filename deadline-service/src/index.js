@@ -5,7 +5,7 @@ import db from "./db.js"; // sqlite db.js
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:30081" }));
 
 const JWT_SECRET = "supersecret"; // must match user-service
 

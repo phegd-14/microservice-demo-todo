@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: todo-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: your-k8s-host.local
+      http:
+        paths:
+          - path: /signup
+            pathType: Exact
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 4000
+          - path: /login
+            pathType: Exact
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 4000
+          - path: /tasks
+            pathType: Prefix
+            backend:
+              service:
+                name: task-service
+                port:
+                  number: 5000
+          - path: /deadlines
+            pathType: Prefix
+            backend:
+              service:
+                name: deadline-service
+                port:
+                  number: 6001
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80
