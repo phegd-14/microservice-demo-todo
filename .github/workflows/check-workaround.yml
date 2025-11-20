@@ -1,0 +1,29 @@
+name: Test Hardcoded Checkout Override
+
+on:
+  workflow_dispatch:
+    # No inputs defined, just a manual trigger
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report which workflow file version is running
+        run: |
+          echo "The workflow file running is from the branch selected in the UI dropdown menu."
+          echo "Next step will ignore this selection and force checkout of 'staging'."
+
+      - name: Checkout the hardcoded 'staging' branch
+        uses: actions/checkout@v4
+        with:
+          # We explicitly set 'staging' here, overriding the UI selection
+          ref: staging
+
+      - name: Print the version.txt file content
+        run: |
+          echo "--- Content of version.txt after checkout ---"
+          cat version.txt
+          echo "----------------------------------------------"
+
+      - name: Final confirmation
+        run: echo "The file output above confirms the code is from the 'staging' branch."
