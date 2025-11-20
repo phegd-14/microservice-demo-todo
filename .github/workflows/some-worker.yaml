@@ -1,0 +1,21 @@
+name: my-workflow
+on: 
+  workflow_dispatch:
+    inputs:
+      userName:
+        description: 'Test user name'     
+        required: true
+        default: 'test1'
+  push:
+   branches:
+     - main
+jobs:
+  printInputs:
+    runs-on: windows-latest
+    steps:
+    - name: Print Inputs
+      shell: cmd
+      run: |
+       rem trying to run a command with external values
+       mkdir ${{ github.event.inputs.userName || 'test-default' }}
+       dir

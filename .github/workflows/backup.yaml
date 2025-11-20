@@ -1,0 +1,21 @@
+name: Simple Backup Workflow
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        required: true
+        type: string
+
+jobs:
+  simple-backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Confirm Backup Workflow Called
+        run: echo "✅ Backup workflow was successfully called!"
+        
+      - name: Print Passed Message
+        run: |
+          echo "📦 Message from main workflow: $MESSAGE"
+        env:
+          MESSAGE: ${{ inputs.message }}

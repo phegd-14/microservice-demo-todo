@@ -1,0 +1,35 @@
+name: my-workflow
+
+on:
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      userName:
+        description: "Test user name"
+        required: true
+        default: "test1"
+
+  # Automatically run on push to main only
+  push:
+    branches:
+      - main
+      - git-test
+
+jobs:
+  printInputs:
+    # <— This allows running the workflow on ANY branch, including git-test
+    runs-on: windows-latest
+
+    steps:
+      - name: Print Inputs
+        shell: cmd
+        run: |
+          rem Assign GitHub input to a CMD variable
+          set USERNAME=${{ github.event.inputs.userName }}
+
+          rem Fallback if empty
+          if "%USERNAME%"=="" set USERNAME=test-default
+
+          rem Make the directory using the dynamic value
+          mkdir "%USERNAME%"
+          dir
