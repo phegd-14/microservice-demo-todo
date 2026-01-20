@@ -2,6 +2,9 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on:
     workflow_dispatch:
+        inputs:
+            args:
+                description: "This is supposed to be a very long description to see how this would respond if we put the descripton over here then well lets ee if its too much or no i don't know what else to put here so im just typing and typing as usual"
 jobs:
   Explore-GitHub-Actions:
     if: github.ref == 'refs/heads/staging'
