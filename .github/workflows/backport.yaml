@@ -1,0 +1,33 @@
+name: Backport
+
+on:
+  pull_request:
+    branches:
+      - release
+    types:
+      - closed
+
+jobs:
+  backport:
+    runs-on: ubuntu-latest
+    name: 'Backport release changes to dev'
+    permissions: write-all
+    if: github.event.pull_request.merged
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Backport release changes to dev
+        id: cherry-pick
+        uses: korthout/backport-action@bf97bcfb53d5250af8b9a15fab0f56158a63b224 # v4.5.1
+        with:
+          target_branches: 'dev'
+          merge_commits: 'skip'
+          pull_description: Backport of [${pull_title}](${{ github.server_url }}/${{ github.repository }}/pull/${pull_number}) to `${target_branch}`.
+
+      - name: PR link
+        run:
+          echo "The created PR is ${{ github.server_url }}/${{ github.repository }}/pull/${{
+          steps['cherry-pick'].outputs.created_pull_numbers }}"
