@@ -11,8 +11,10 @@ jobs:
   backport:
     runs-on: ubuntu-latest
     name: 'Backport release changes to dev'
-    permissions: write-all
-    if: github.event.pull_request.merged
+    permissions:
+      contents: write
+      pull-requests: write
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'hotfix/')
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -21,8 +23,9 @@ jobs:
 
       - name: Backport release changes to dev
         id: cherry-pick
-        uses: korthout/backport-action@v3.2.0
+        uses: korthout/backport-action@bf97bcfb53d5250af8b9a15fab0f56158a63b224 # v4.5.1
         with:
+          github_token: ${{ secrets.BACKPORT_GITHUB_TOKEN }}
           target_branches: 'dev'
           merge_commits: 'skip'
           pull_description: Backport of [${pull_title}](${{ github.server_url }}/${{ github.repository }}/pull/${pull_number}) to `${target_branch}`.
