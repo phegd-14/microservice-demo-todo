@@ -49,5 +49,5 @@ npm run dev
 > Make sure all 3 services are running before starting the frontend.  
 > JWT secret (supersecret) must be the same across services.  
 > SQLite DB files will be auto-created in each service folder.  
-
-another test
+this edit is to create a pr to main
+this is a new feature
